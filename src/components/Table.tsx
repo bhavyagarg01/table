@@ -77,7 +77,6 @@ const BasicTable = () => {
 
   const getApiData = async () => {
     const res = await axios.get("http://192.168.1.63:3333/all");
-    console.log(res);
     setRecord(res.data as Users[]);
     setFilterRecord(res.data as Users[]);
   };
@@ -118,7 +117,6 @@ const BasicTable = () => {
                   onChange={(e) => setSearch(e.target.value)}
                 />
               </Search>
-
               <Box sx={{ flexGrow: 1 }} />
               <Box sx={{ display: { xs: "none", md: "flex" } }}>
                 <Button variant="contained">Add User</Button>
@@ -136,8 +134,7 @@ const BasicTable = () => {
               <TableRow>
                 <TableCell> Id </TableCell>
                 <TableCell align="left">Employee Id</TableCell>
-                <TableCell align="left">First Name</TableCell>
-                <TableCell align="left">Last Name</TableCell>
+                <TableCell align="left"> Name</TableCell>
                 <TableCell align="left">Mobile Number</TableCell>
                 <TableCell align="left">Official Email</TableCell>
                 <TableCell align="left">Joining Date</TableCell>
@@ -156,12 +153,12 @@ const BasicTable = () => {
                     {a._id}
                   </TableCell>
                   <TableCell align="left">{a.employee_id}</TableCell>
-                  <TableCell align="left">{a.firstname}</TableCell>
-                  <TableCell align="left">{a.lastname}</TableCell>
+                  <TableCell align="left">
+                    {a.firstname} {a.lastname}
+                  </TableCell>
                   <TableCell align="left">{a.mobile_number}</TableCell>
                   <TableCell align="left">{a.official_email}</TableCell>
                   <TableCell align="left">{a.joining_date}</TableCell>
-
                   <TableCell>
                     <IconButton aria-label="edit">
                       <EditIcon />
