@@ -10,9 +10,55 @@ import { useEffect, useState } from "react";
 import EditIcon from "@mui/icons-material/Edit";
 import DeleteIcon from "@mui/icons-material/Delete";
 import IconButton from "@mui/material/IconButton";
-import SearchBar from "./SearchBar";
 import axios from "axios";
 import TransitionsModal from "./Modal";
+import { styled, alpha } from "@mui/material/styles";
+import AppBar from "@mui/material/AppBar";
+import Box from "@mui/material/Box";
+import Toolbar from "@mui/material/Toolbar";
+import InputBase from "@mui/material/InputBase";
+import SearchIcon from "@mui/icons-material/Search";
+import { Button } from "@mui/material";
+
+const Search = styled("div")(({ theme }) => ({
+  position: "relative",
+  borderRadius: theme.shape.borderRadius,
+  backgroundColor: alpha(theme.palette.common.white, 0.15),
+  "&:hover": {
+    backgroundColor: alpha(theme.palette.common.white, 0.25),
+  },
+  marginRight: theme.spacing(2),
+  marginLeft: 0,
+  width: "100%",
+  [theme.breakpoints.up("sm")]: {
+    marginLeft: theme.spacing(3),
+    width: "auto",
+  },
+}));
+
+const SearchIconWrapper = styled("div")(({ theme }) => ({
+  padding: theme.spacing(0, 2),
+  height: "100%",
+  position: "absolute",
+  pointerEvents: "none",
+  display: "flex",
+  alignItems: "center",
+  justifyContent: "center",
+}));
+
+const StyledInputBase = styled(InputBase)(({ theme }) => ({
+  color: "inherit",
+  "& .MuiInputBase-input": {
+    padding: theme.spacing(1, 1, 1, 0),
+    // vertical padding + font size from searchIcon
+    paddingLeft: `calc(1em + ${theme.spacing(4)})`,
+    transition: theme.transitions.create("width"),
+    width: "100%",
+    [theme.breakpoints.up("md")]: {
+      width: "20ch",
+    },
+  },
+}));
 
 interface Users {
   employee_id: string;
@@ -24,15 +70,25 @@ interface Users {
 
 const BasicTable = () => {
   const [record, setRecord] = useState<Users[]>([]);
+  const [search, setSearch] = useState("");
+  const [filterRecord, setFilterRecord] = useState<Users[]>([]);
 
   const getApiData = async () => {
     const res = await axios.get("http://192.168.1.63:3333/all");
     console.log(res);
     setRecord(res.data as Users[]);
+    setFilterRecord(res.data as Users[]);
   };
   useEffect(() => {
     getApiData();
   }, []);
+
+  useEffect(() => {
+    const result = record.filter((user) => {
+      return user.firstname.toLowerCase().match(search.toLowerCase());
+    });
+    setFilterRecord(result);
+  }, [search]);
 
   return (
     <>
@@ -40,8 +96,30 @@ const BasicTable = () => {
         <h1>Employee List</h1>
       </div>
       <div>
-        <SearchBar />
+        <Box sx={{ flexGrow: 1 }}>
+          <AppBar position="static">
+            <Toolbar>
+              <Search>
+                <SearchIconWrapper>
+                  <SearchIcon />
+                </SearchIconWrapper>
+                <StyledInputBase
+                  placeholder="Search…"
+                  inputProps={{ "aria-label": "search" }}
+                  value={search}
+                  onChange={(e) => setSearch(e.target.value)}
+                />
+              </Search>
+              <Box sx={{ flexGrow: 1 }} />
+              <Box sx={{ display: { xs: "none", md: "flex" } }}>
+                <Button variant="contained">Add User</Button>
+              </Box>
+              <Box sx={{ display: { xs: "flex", md: "none" } }}></Box>
+            </Toolbar>
+          </AppBar>
+        </Box>
       </div>
+
       <div>
         <TableContainer component={Paper}>
           <Table sx={{ minWidth: 650 }} aria-label="simple table">
@@ -58,7 +136,7 @@ const BasicTable = () => {
               </TableRow>
             </TableHead>
             <TableBody>
-              {record.map((a, index) => (
+              {filterRecord.map((a, index) => (
                 <TableRow
                   sx={{ "&:last-child td, &:last-child th": { border: 0 } }}
                   key={index}
