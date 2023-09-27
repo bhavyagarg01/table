@@ -89,10 +89,10 @@ const BasicTable = () => {
   useEffect(() => {
     const result = record.filter((user) => {
       return (
+        user.employee_id.toLowerCase().match(search.toLowerCase()) ||
         user.firstname.toLowerCase().match(search.toLowerCase()) ||
         user.lastname.toLowerCase().match(search.toLowerCase()) ||
-        user.official_email.toLowerCase().match(search.toLowerCase()) ||
-        user.employee_id.toLowerCase().match(search.toLowerCase())
+        user.official_email.toLowerCase().match(search.toLowerCase())
       );
     });
     setFilterRecord(result);
@@ -118,6 +118,7 @@ const BasicTable = () => {
                   onChange={(e) => setSearch(e.target.value)}
                 />
               </Search>
+
               <Box sx={{ flexGrow: 1 }} />
               <Box sx={{ display: { xs: "none", md: "flex" } }}>
                 <Button variant="contained">Add User</Button>
@@ -160,6 +161,7 @@ const BasicTable = () => {
                   <TableCell align="left">{a.mobile_number}</TableCell>
                   <TableCell align="left">{a.official_email}</TableCell>
                   <TableCell align="left">{a.joining_date}</TableCell>
+
                   <TableCell>
                     <IconButton aria-label="edit">
                       <EditIcon />
