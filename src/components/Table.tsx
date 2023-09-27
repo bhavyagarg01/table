@@ -80,7 +80,7 @@ const BasicTable = () => {
     setRecord(res.data as Users[]);
     setFilterRecord(res.data as Users[]);
   };
-  
+
   useEffect(() => {
     getApiData();
   }, []);
