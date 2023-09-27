@@ -61,6 +61,7 @@ const StyledInputBase = styled(InputBase)(({ theme }) => ({
 }));
 
 interface Users {
+  _id: any;
   employee_id: string;
   firstname: string;
   mobile_number: number;
@@ -79,6 +80,7 @@ const BasicTable = () => {
     setRecord(res.data as Users[]);
     setFilterRecord(res.data as Users[]);
   };
+  
   useEffect(() => {
     getApiData();
   }, []);
@@ -125,7 +127,8 @@ const BasicTable = () => {
           <Table sx={{ minWidth: 650 }} aria-label="simple table">
             <TableHead>
               <TableRow>
-                <TableCell>Id </TableCell>
+                <TableCell> Id </TableCell>
+                <TableCell align="left">Employee Id</TableCell>
                 <TableCell align="left">Name</TableCell>
                 <TableCell align="left">Mobile Number</TableCell>
                 <TableCell align="left">Official Email</TableCell>
@@ -142,8 +145,9 @@ const BasicTable = () => {
                   key={index}
                 >
                   <TableCell component="th" scope="row">
-                    {a.employee_id}
+                    {a._id}
                   </TableCell>
+                  <TableCell align="left">{a.employee_id}</TableCell>
                   <TableCell align="left">{a.firstname}</TableCell>
                   <TableCell align="left">{a.mobile_number}</TableCell>
                   <TableCell align="left">{a.official_email}</TableCell>
