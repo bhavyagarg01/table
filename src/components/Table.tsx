@@ -18,7 +18,10 @@ import Box from "@mui/material/Box";
 import Toolbar from "@mui/material/Toolbar";
 import InputBase from "@mui/material/InputBase";
 import SearchIcon from "@mui/icons-material/Search";
-import { Button, Pagination } from "@mui/material";
+import { Button, Drawer } from "@mui/material";
+import EmployeeForm from "@/app/Form/page";
+
+// import Drawer from "react-modern-drawer";
 
 const Search = styled("div")(({ theme }) => ({
   position: "relative",
@@ -74,9 +77,10 @@ const BasicTable = () => {
   const [record, setRecord] = useState<Users[]>([]);
   const [search, setSearch] = useState("");
   const [filterRecord, setFilterRecord] = useState<Users[]>([]);
+  const [isOpen, setIsOpen] = useState(false);
 
   const getApiData = async () => {
-    const res = await axios.get("http://192.168.1.63:3333/all");
+    const res = await axios.get("http://192.168.1.63:3333/employee/all");
     setRecord(res.data as Users[]);
     setFilterRecord(res.data as Users[]);
   };
@@ -119,8 +123,21 @@ const BasicTable = () => {
               </Search>
               <Box sx={{ flexGrow: 1 }} />
               <Box sx={{ display: { xs: "none", md: "flex" } }}>
-                <Button variant="contained">Add User</Button>
+                <Button variant="contained" onClick={() => setIsOpen(true)}>
+                  Add User
+                </Button>
               </Box>
+              <Drawer
+                open={isOpen}
+                onClose={() => setIsOpen(false)}
+                // direction="right"
+                // size="1000px"
+
+                className="bla bla bla overflow-auto"
+              >
+                <EmployeeForm setIsOpen={setIsOpen} />
+              </Drawer>
+
               <Box sx={{ display: { xs: "flex", md: "none" } }}></Box>
             </Toolbar>
           </AppBar>
@@ -177,7 +194,7 @@ const BasicTable = () => {
             </TableBody>
           </Table>
         </TableContainer>
-        <Pagination />
+        {/* <Pagination /> */}
       </div>
     </>
   );
