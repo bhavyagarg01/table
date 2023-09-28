@@ -26,7 +26,7 @@ export default function TransitionsModal() {
 
   return (
     <div>
-      <IconButton aria-label="delete" onClick={handleOpen}>
+      <IconButton aria-label="View" onClick={handleOpen}>
         <VisibilityIcon />
       </IconButton>
 

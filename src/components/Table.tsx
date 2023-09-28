@@ -18,7 +18,7 @@ import Box from "@mui/material/Box";
 import Toolbar from "@mui/material/Toolbar";
 import InputBase from "@mui/material/InputBase";
 import SearchIcon from "@mui/icons-material/Search";
-import { Button } from "@mui/material";
+import { Button, Pagination } from "@mui/material";
 
 const Search = styled("div")(({ theme }) => ({
   position: "relative",
@@ -177,6 +177,7 @@ const BasicTable = () => {
             </TableBody>
           </Table>
         </TableContainer>
+        <Pagination />
       </div>
     </>
   );
